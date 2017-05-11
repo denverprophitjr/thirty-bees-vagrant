@@ -13,7 +13,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = 'ubuntu/trusty32'
 
   # The hostname for the VM
-  config.vm.hostname = 'vagrant-wordpress'
+  config.vm.hostname = 'vagrant-thirtybees'
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -27,12 +27,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  config.vm.network 'private_network', ip: '192.168.56.20'
+  config.vm.network 'private_network', ip: '10.0.10.1'
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
   # your network.
-  # config.vm.network "public_network"
+  config.vm.network 'public_network, ip: '192.168.1.25'
 
   # If true, then any SSH connections made will enable agent forwarding.
   # Default value: false
@@ -60,14 +60,37 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #   # Use VBoxManage to customize the VM. For example to change memory:
   #   vb.customize ["modifyvm", :id, "--memory", "1024"]
   # end
-  config.vm.provider 'virtualbox' do |vb|
-    vb.customize ['modifyvm', :id, '--memory', '1024']
+  config.vm.provider 'virtualbox' do |v,override|
+    v.gui=false
+    v.customize ["modifyvm", :id, "--memory", 1024]
+    v.customize ["modifyvm", :id, "--cpus", "2"]
+    v.customize ["modifyvm", :id, "--vram", "128"]
+    v.customize ["setextradata", "global", "GUI/MaxGuestResolution", "any"]
+    v.customize ["setextradata", :id, "CustomVideoMode1", "1024x768x32"]
+    v.customize ["modifyvm", :id, "--ioapic", "on"]
+    v.customize ["modifyvm", :id, "--rtcuseutc", "on"]
+    v.customize ["modifyvm", :id, "--accelerate3d", "on"]
+    v.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
+    v.customize ["modifyvm", :id, "--audio", "none"]
+    v.customize ["modifyvm", :id, "--draganddrop", "hosttoguest"]
   end
+["vmware_fusion", "vmware_workstation"].each do |provider|
+      config.vm.provider provider do |v, override|
+        v.gui = true
+        v.vmx["memsize"] = "1048"
+        v.vmx["numvcpus"] = "2"
+        v.vmx["cpuid.coresPerSocket"] = "4"
+        v.vmx["ethernet0.virtualDev"] = "vmxnet3"
+        v.vmx["RemoteDisplay.vnc.enabled"] = "false"
+        v.vmx["RemoteDisplay.vnc.port"] = "5900"
+        v.vmx["scsi0.virtualDev"] = "lsilogic"
+        v.vmx["mks.enable3d"] = "TRUE"
+  end
+  
 
-  config.vm.synced_folder 'www', '/www'
+  config.vm.synced_folder '//user//public//www', '/var/www/html'
 
-  # View the documentation for the provider you're using for more
-  # information on available options.
+  # View the documentation for the provider you're using for information on available options.
 
   config.vm.provision 'shell', inline: 'test -d /etc/puppet/modules/apt || puppet module install puppetlabs/apt'
 
@@ -79,15 +102,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     puppet.options        = '--verbose --debug'
     puppet.facter         = {
       'mysql_root_password'      => 'vagrant',
-      'mysql_wordpress_user'     => 'wordpress',
-      'mysql_wordpress_dbname'   => 'wordpress',
-      'mysql_wordpress_password' => 'wordpress',
-      'wordpress_url'            => "http://#{config.vm.hostname}.dev",
-      'wordpress_title'          => 'The Title',
-      'wordpress_admin_user'     => 'vagrant',
-      'wordpress_admin_password' => 'vagrant',
+      'mysql_wordpress_user'     => 'thirtybees',
+      'mysql_wordpress_dbname'   => 'thirtybees',
+      'mysql_wordpress_password' => 'thirtybees',
+      'thirtybees_url'            => "http://#{config.vm.hostname}.dev",
+      'thirtybees_title'          => 'The Title',
+      'thirtybees_admin_user'     => 'no_reply@thirtybees.com',
+      'thirtybees_admin_password' => 'vagrant',
       'wordpress_admin_email'    => "vagrant@#{config.vm.hostname}.dev",
-      'wwwroot'                  => '/www'
+      'wwwroot'                  => '/var/www/html'
     }
   end
 end

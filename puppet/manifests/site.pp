@@ -1,5 +1,5 @@
 class {'nginx': }
 class {'mariadb::install': }
-class {'php5-fpm': }
-class {'wordpress': }
+class {'php7-fpm': }
+class {'thirtybees': }
 class {'phpmyadmin': }

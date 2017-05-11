@@ -8,7 +8,7 @@ class mariadb::install {
   }
 
   apt::source { 'mariadb':
-    location    => 'http://sfo1.mirrors.digitalocean.com/mariadb/repo/10.0/ubuntu',
+    location    => 'http://sfo1.mirrors.digitalocean.com/mariadb/repo/10.1/ubuntu/',
     release     => 'trusty',
     repos       => 'main',
     include     => {
@@ -19,12 +19,12 @@ class mariadb::install {
 
   exec { 'update-apt':
     path    => '/usr/bin',
-    unless  => 'dpkg -s mariadb-server-10.0',
+    unless  => 'dpkg -s mariadb-server-10.1',
     command => 'apt-get update',
     require => Apt::Source['mariadb'],
   }
 
-  package { ['mariadb-server-10.0', 'mariadb-client-10.0']:
+  package { ['mariadb-server-10.1', 'mariadb-client-10.1']:
     ensure  => installed,
     require => Exec['update-apt'],
   }
@@ -34,14 +34,14 @@ class mariadb::install {
     unless      => "mysqladmin -uroot -p${::mysql_root_password} status",
     refreshonly => true,
     command     => "mysqladmin -uroot password ${::mysql_root_password}",
-    subscribe   => Package['mariadb-server-10.0'],
+    subscribe   => Package['mariadb-server-10.1'],
   }
 }
 
-class mariadb::php5-mysql {
-  package { 'php5-mysql':
+class mariadb::php7-mysql {
+  package { 'php7-mysql':
     ensure  => installed,
-    require => Package['php5-fpm', 'mariadb-server-10.0'],
-    notify  => Service['php5-fpm'],
+    require => Package['php7-fpm', 'mariadb-server-10.1'],
+    notify  => Service['php7-fpm'],
   }
 }
