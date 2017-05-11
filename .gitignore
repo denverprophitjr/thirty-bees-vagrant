@@ -1,0 +1,6 @@
+# -*- mode: gitignore; -*-
+.vagrant/
+Vagrantfile
+
+www/*
+!www/.gitkeep
