@@ -1,46 +1,44 @@
-class php5-fpm {
-  include apt
+class { '::php':
+    ensure         => latest,
+    manage_repos   => false,
+    fpm            => true,
+    dev            => false,
+    composer       => true,
+    pear           => false,
+    phpunit        => false,
+    package_prefix =>'php7.0-',
+    settings       => {
+      'PHP/max_execution_time'  => '90',
+      'PHP/max_input_time'      => '300',
+      'PHP/memory_limit'        => '512M',
+      'PHP/post_max_size'       => '32M',
+      'PHP/upload_max_filesize' => '32M',
+      'Date/date.timezone'      => 'America/New_York',
+      'PHP/max_input_vars       => ' 5000',
+    },
+    extensions     => {
+      xml      => {},
+      xmlrpc   => {},
+      xsl      => {},
+      gd       => {},
+      mcrypt   => {},
+      mysqlnd  => {},
+      mbstring => {},
+      opcache  => {},
+      redis    => {},
+      soap     => {},
+      bcmath   => {},
+      zip      => {},
+      imap     => {},
+      curl     => {},
+      },
+    }
 
-  apt::key { 'ppa:ondrej/php5-5.6':
-    ensure => present,
-    server => 'hkp://keyserver.ubuntu.com:80',
-    id     => 'E5267A6C',
+  php::fpm::pool { 'www1':
+    listen => '/var/run/php7-fpm.sock1',
   }
 
-  apt::ppa { 'ppa:ondrej/php5-5.6':
-    require => Apt::Key['ppa:ondrej/php5-5.6'],
+  php::fpm::pool { 'www2':
+    listen => '/var/run/php7-fpm.sock2',
   }
-
-  package { ['php5-fpm', 'php5-cli']:
-    ensure  => installed,
-    require => Apt::Ppa['ppa:ondrej/php5-5.6'],
-  }
-
-  service { 'php5-fpm':
-    ensure     => running,
-    enable     => true,
-    hasrestart => true,
-    hasstatus  => true,
-    require    => Package['php5-fpm'],
-  }
-
-  file { '/etc/php5/fpm/pool.d/www.conf':
-    owner   => root,
-    group   => root,
-    mode    => '0644',
-    source  => 'puppet:///modules/php5-fpm/www.conf',
-    notify  => Service['php5-fpm'],
-    require => Package['php5-fpm'],
-  }
-
-  file { '/etc/php5/fpm/php.ini':
-    owner   => root,
-    group   => root,
-    mode    => '0644',
-    source  => 'puppet:///modules/php5-fpm/php.ini',
-    notify  => Service['php5-fpm'],
-    require => Package['php5-fpm'],
-  }
-
-  include mariadb::php5-mysql
 }
