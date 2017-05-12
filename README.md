@@ -34,7 +34,7 @@ MariaDB       | root      | vagrant
 thirty bees | thirtybees | thirtybees
 WordPress Admin | no_reply@thirtybees.com | thirtybees
 
-#Contributors
+## Contributors
 
 Name     | Github User  | Website
 ------------|-----------|---------
