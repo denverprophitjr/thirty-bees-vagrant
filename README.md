@@ -37,4 +37,4 @@ WordPress Admin | no_reply@thirtybees.com | thirtybees
 #Contributors
 Name     | Github User  | Website
 ------------|-----------|---------
-Denver Prophit Jr.       | [inetbiz](https://github.com/inetbiz)      | https://www.denverprophit.us/
+Denver Prophit Jr.| [inetbiz](https://github.com/inetbiz)| https://www.denverprophit.us/
