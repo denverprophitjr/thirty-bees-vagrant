@@ -1,4 +1,5 @@
 class { '::php':
+-  include apt
     ensure         => latest,
     manage_repos   => false,
     fpm            => true,
@@ -14,7 +15,7 @@ class { '::php':
       'PHP/post_max_size'       => '32M',
       'PHP/upload_max_filesize' => '32M',
       'Date/date.timezone'      => 'America/New_York',
-      'PHP/max_input_vars       => ' 5000',
+      'PHP/max_input_vars       => ' 1600',
     },
     extensions     => {
       xml      => {},
