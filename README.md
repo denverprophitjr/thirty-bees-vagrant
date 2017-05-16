@@ -1,7 +1,6 @@
 # Trusty64/Ubuntu LEMP Vagrant / Puppet
-<figure align="center">![thirty bees shopping cart](https://raw.github.com/thirtybees/thirtybees/1.0.x/admin-dev/themes/default/img/thirty-bees-avatar-header_shopname.png)
-<figcaption>[**thirty bees shopping cart**](http://thirtybees.com)</figcaption>
-</figure>
+
+![thirty bees shopping cart](https://raw.github.com/thirtybees/thirtybees/1.0.x/admin-dev/themes/default/img/thirty-bees-avatar-header_shopname.png) Open Source Shopping Cart
 
 ## Overview
 ### What is Included
@@ -39,3 +38,4 @@ WordPress Admin | no_reply@thirtybees.com | thirtybees
 Name     | Github User  | Website
 ------------|-----------|---------
 Denver Prophit Jr.| [inetbiz](https://github.com/inetbiz)| https://www.denverprophit.us/
+
